@@ -80,6 +80,8 @@
   width: 90%;          /* 🔥 takes 90% of screen on small devices */
   max-width: 320px;    /* ✅ small but enough for 3 full rows */
   margin: 20px auto;
+  margin-bottom: 0;   /* no extra margin */
+  padding-bottom: 0;  /* no padding */
 }
 
 .cell {
@@ -119,7 +121,7 @@
     .undo-wrapper {
   display: flex;
   justify-content: center;   /* ✅ center horizontally */
-  margin-top: 0px;          /* space above */
+  margin-top: -5px;          /* space above */
 }
 
 #undoBtn {
