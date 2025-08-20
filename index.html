@@ -116,6 +116,29 @@
       .board-card { padding: 20px; }
       .board { gap: 14px; }
     }
+    .undo-wrapper {
+  display: flex;
+  justify-content: center;   /* ✅ center horizontally */
+  margin-top: 15px;          /* space above */
+}
+
+#undoBtn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  background: #2a2f55;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+#undoBtn:hover {
+  background: #3a3f75;
+  transform: scale(1.05);
+}
+
   </style>
 </head>
 <body>
