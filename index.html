@@ -72,12 +72,13 @@
     .badge.accent { border-color: rgba(124,92,255,.5); box-shadow: 0 0 0 2px rgba(124,92,255,.15) inset; }
     .badge.good { border-color: rgba(34,197,94,.5); box-shadow: 0 0 0 2px rgba(34,197,94,.15) inset; }
 
- .board {
+
+    .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;              /* 🔽 smaller gap */
-  width: 100%;
-  max-width: 300px;      /* 🔽 reduced board size */
+  gap: 8px;
+  width: 90%;          /* 🔥 takes 90% of screen on small devices */
+  max-width: 320px;    /* ✅ small but enough for 3 full rows */
   margin: 20px auto;
 }
 
@@ -87,18 +88,15 @@
 
   display: grid;
   place-items: center;
-  font-size: clamp(1.8rem, 6vw, 3rem); /* 🔽 smaller font */
+  font-size: clamp(1.6rem, 6vw, 2.5rem); 
   font-weight: 800;
-  letter-spacing: 1px;
-
-  background: radial-gradient(300px 300px at 50% 30%, #1f254a 0%, #171a2f 60%);
+  background: radial-gradient(250px 250px at 50% 30%, #1f254a 0%, #171a2f 60%);
   color: var(--text);
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 12px;   /* 🔽 smaller rounding */
+  border-radius: 10px;
   cursor: pointer;
   transition: background .2s ease, transform .06s ease, box-shadow .2s ease;
 }
-
 
     .cell:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     .cell:hover { background: #232a54; }
