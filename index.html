@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>XO (Tic‑Tac‑Toe)</title>
+  <title>XO (Tic-Tac-Toe)</title>
   <style>
     :root {
       --bg: #0f1220;
@@ -17,35 +17,42 @@
       --radius: 18px;
     }
     * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    html, body { height: 100%; margin: 0; }
     body {
-      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       background: radial-gradient(1200px 800px at 10% 10%, #141833 0%, var(--bg) 60%);
       color: var(--text);
-      display: grid; place-items: center;
-      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden; /* 🔥 no scroll */
+      padding: 10px;
     }
     .app {
       width: 100%; max-width: 860px;
-      display: grid; gap: 16px;
-      grid-template-columns: 1fr;
+      height: 100%; /* 🔥 fill full viewport */
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     header {
-      display: flex; gap: 12px; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+      display: flex; gap: 8px; align-items: center; justify-content: space-between;
       background: linear-gradient(180deg, #1a1f3d, var(--card));
       box-shadow: var(--shadow);
       border: 1px solid rgba(255,255,255,.06);
       border-radius: var(--radius);
-      padding: 14px 16px;
+      padding: 8px 12px; /* 🔥 smaller header */
     }
-    .title { font-weight: 700; letter-spacing: .3px; }
-    .title small { color: var(--muted); font-weight: 500; }
-    .controls { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .title { font-weight: 700; letter-spacing: .3px; font-size: 1rem; }
+    .title small { color: var(--muted); font-weight: 500; font-size: 0.8rem; }
+    .controls { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 
     button, select {
       background: #1f2342; color: var(--text);
       border: 1px solid rgba(255,255,255,.08);
-      border-radius: 12px; padding: 10px 14px; font-weight: 600;
+      border-radius: 10px; padding: 6px 10px; font-weight: 600; font-size: 0.85rem;
       cursor: pointer; transition: transform .06s ease, background .2s ease, border-color .2s;
     }
     button:hover, select:hover { background: #242a53; }
@@ -53,68 +60,68 @@
     button[disabled] { opacity: .6; cursor: not-allowed; }
 
     .board-card {
-      display: grid; gap: 14px; align-items: start;
-      grid-template-columns: 1fr;
+      flex: 1; /* 🔥 board section expands */
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
       background: linear-gradient(180deg, #141938, #11142a);
       border: 1px solid rgba(255,255,255,.06);
       box-shadow: var(--shadow);
       border-radius: var(--radius);
-      padding: 16px;
+      padding: 10px;
+      min-height: 0; /* 🔥 allow flexbox shrinking */
     }
     .statusbar {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
       align-items: center; text-align: center;
+      font-size: 0.9rem;
     }
     .badge {
-      padding: 8px 10px; border-radius: 12px; font-weight: 700; letter-spacing: .3px;
+      padding: 6px 8px; border-radius: 10px; font-weight: 700; letter-spacing: .3px;
       background: #1d213f; border: 1px solid rgba(255,255,255,.08);
     }
     .badge.accent { border-color: rgba(124,92,255,.5); box-shadow: 0 0 0 2px rgba(124,92,255,.15) inset; }
     .badge.good { border-color: rgba(34,197,94,.5); box-shadow: 0 0 0 2px rgba(34,197,94,.15) inset; }
 
-
+    /* Board fills available space */
     .board {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 90%;          /* 🔥 takes 90% of screen on small devices */
-  max-width: 320px;    /* ✅ small but enough for 3 full rows */
-  margin: 20px auto;
-}
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
 
-.cell {
-  aspect-ratio: 1 / 1;
-  width: 100%;
-
-  display: grid;
-  place-items: center;
-  font-size: clamp(1.6rem, 6vw, 2.5rem); 
-  font-weight: 800;
-  background: radial-gradient(250px 250px at 50% 30%, #1f254a 0%, #171a2f 60%);
-  color: var(--text);
-  border: 1px solid rgba(255,255,255,.08);
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background .2s ease, transform .06s ease, box-shadow .2s ease;
-}
-
-    .cell:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .cell {
+      aspect-ratio: 1/1;
+      width: 100%; height: 100%;
+      display: grid; place-items: center;
+      font-size: clamp(1.4rem, 6vw, 2.2rem); 
+      font-weight: 800;
+      background: radial-gradient(250px 250px at 50% 30%, #1f254a 0%, #171a2f 60%);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s ease, transform .06s ease, box-shadow .2s ease;
+    }
     .cell:hover { background: #232a54; }
     .cell:active { transform: scale(.995); }
-
     .cell.win { box-shadow: 0 0 0 3px rgba(34,197,94,.35) inset, 0 12px 30px rgba(34,197,94,.15); }
     .cell.draw { box-shadow: 0 0 0 3px rgba(124,92,255,.25) inset; }
 
     .footer {
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
+      flex-shrink: 0;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;
+      font-size: 0.8rem;
     }
-    .links { color: var(--muted); font-size: .92rem; }
+    .links { color: var(--muted); }
     .links a { color: var(--accent-2); text-decoration: none; }
 
     @media (min-width: 720px) {
-      .app { grid-template-columns: 1fr; }
-      .board-card { padding: 20px; }
-      .board { gap: 14px; }
+      .board-card { padding: 14px; }
+      .board { gap: 10px; }
     }
   </style>
 </head>
@@ -125,13 +132,12 @@
         <h1 id="appTitle" class="title">XO Game <small>• Responsive • Play vs Player/CPU</small></h1>
       </div>
       <div class="controls">
-        <label for="mode" class="sr-only">Mode</label>
         <select id="mode" aria-label="Game mode">
           <option value="pvp">2 Players</option>
           <option value="cpu">Vs CPU</option>
         </select>
-        <button id="newGameBtn" title="Start a new round (keep scores)">New Round</button>
-        <button id="resetBtn" title="Reset scores & board">Reset All</button>
+        <button id="newGameBtn">New Round</button>
+        <button id="resetBtn">Reset All</button>
       </div>
     </header>
 
@@ -139,22 +145,17 @@
       <div class="statusbar">
         <div id="turn" class="badge accent">Turn: X</div>
         <div id="status" class="badge">Make a move</div>
-        <div id="score" class="badge good" aria-label="Scores">X 0 • O 0</div>
+        <div id="score" class="badge good">X 0 • O 0</div>
       </div>
-      <div id="board" class="board" role="grid" aria-label="Tic Tac Toe Board">
-        <!-- Cells generated by JS -->
-      </div>
+      <div id="board" class="board" role="grid" aria-label="Tic Tac Toe Board"></div>
       <div class="footer">
-        <small class="links">Tip: Use keyboard (Tab then Enter/Space) to play. </small>
-        <div>
-          <button id="undoBtn" title="Undo last move">Undo</button>
-        </div>
+        <small class="links">Tip: Use keyboard (Tab then Enter/Space) to play.</small>
+        <button id="undoBtn">Undo</button>
       </div>
     </section>
   </main>
 
   <script>
-    // --- Game State ---
     const boardEl = document.getElementById('board');
     const statusEl = document.getElementById('status');
     const turnEl = document.getElementById('turn');
@@ -170,10 +171,10 @@
       [0,4,8],[2,4,6]
     ];
 
-    let board = Array(9).fill(null); // 'X' | 'O' | null
+    let board = Array(9).fill(null);
     let current = 'X';
     let active = true;
-    let history = []; // stack of moves {idx, player}
+    let history = [];
     let scores = JSON.parse(localStorage.getItem('xo_scores') || '{"X":0,"O":0}');
 
     function updateScoreUI(){ scoreEl.textContent = `X ${scores.X} • O ${scores.O}`; }
@@ -183,12 +184,10 @@
       for(let i=0;i<9;i++){
         const btn = document.createElement('button');
         btn.className = 'cell';
-        btn.setAttribute('role','gridcell');
-        btn.setAttribute('aria-label', `Cell ${i+1}`);
         btn.dataset.idx = i;
         btn.addEventListener('click', onCell);
-        btn.addEventListener('keydown', (e)=>{
-          if((e.key==='Enter' || e.key===' ') && !btn.disabled){ onCell.call(btn, e); }
+        btn.addEventListener('keydown', e=>{
+          if((e.key==='Enter'||e.key===' ') && !btn.disabled){ onCell.call(btn, e); }
         });
         boardEl.appendChild(btn);
       }
@@ -204,13 +203,12 @@
       turnEl.textContent = `Turn: ${current}`;
     }
 
-    function onCell(e){
+    function onCell(){
       const idx = Number(this.dataset.idx);
       if(!active || board[idx]) return;
       makeMove(idx, current);
       const outcome = checkOutcome();
       if(outcome.done){ endRound(outcome); return; }
-      // CPU move if needed
       if(modeSelect.value === 'cpu' && active){
         setTimeout(()=>{
           const cpuIdx = chooseCpuMove('O');
@@ -219,9 +217,9 @@
             const out2 = checkOutcome();
             if(out2.done){ endRound(out2); return; }
           }
-        }, 150);
+        },150);
       } else {
-        current = current === 'X' ? 'O' : 'X';
+        current = current==='X'?'O':'X';
         render();
       }
     }
@@ -235,42 +233,36 @@
     function checkOutcome(){
       for(const line of WINS){
         const [a,b,c] = line;
-        if(board[a] && board[a]===board[b] && board[a]===board[c]){
-          return { done:true, winner: board[a], line };
-        }
+        if(board[a] && board[a]===board[b] && board[a]===board[c]) return {done:true,winner:board[a],line};
       }
-      if(board.every(Boolean)) return { done:true, draw:true };
-      return { done:false };
+      if(board.every(Boolean)) return {done:true,draw:true};
+      return {done:false};
     }
 
-    function endRound({winner, line, draw}){
+    function endRound({winner,line,draw}){
       active = false;
       if(draw){
         statusEl.textContent = 'Draw! New round?';
-        [...boardEl.children].forEach(btn=> btn.classList.add('draw'));
+        [...boardEl.children].forEach(btn=>btn.classList.add('draw'));
       } else {
         statusEl.textContent = `${winner} wins!`;
-        scores[winner] = (scores[winner]||0) + 1;
+        scores[winner] = (scores[winner]||0)+1;
         localStorage.setItem('xo_scores', JSON.stringify(scores));
         updateScoreUI();
         line.forEach(i=> boardEl.children[i].classList.add('win'));
       }
-      // enable New Round button prompt
       newGameBtn.focus();
     }
 
     function newRound(){
       board = Array(9).fill(null);
-      current = 'X';
-      active = true;
-      history = [];
+      current = 'X'; active = true; history = [];
       statusEl.textContent = 'Make a move';
       render();
     }
 
     function resetAll(){
-      newRound();
-      scores = {X:0, O:0};
+      newRound(); scores = {X:0,O:0};
       localStorage.setItem('xo_scores', JSON.stringify(scores));
       updateScoreUI();
     }
@@ -279,46 +271,36 @@
       if(!history.length || !active) return;
       const last = history.pop();
       board[last.idx] = null;
-      current = last.player; // revert turn
+      current = last.player;
       render();
     }
 
-    // --- Simple CPU: win > block > center > corner > side ---
     function chooseCpuMove(cpu='O'){
-      const human = cpu === 'X' ? 'O' : 'X';
-      // Try to win
-      let idx = findBest(cpu);
-      if(idx != null) return idx;
-      // Try to block
-      idx = findBest(human);
-      if(idx != null) return idx;
-      // Center
+      const human = cpu==='X'?'O':'X';
+      let idx = findBest(cpu); if(idx!=null) return idx;
+      idx = findBest(human); if(idx!=null) return idx;
       if(!board[4]) return 4;
-      // Corners
-      const corners = [0,2,6,8].filter(i=>!board[i]);
+      const corners=[0,2,6,8].filter(i=>!board[i]);
       if(corners.length) return corners[Math.floor(Math.random()*corners.length)];
-      // Sides
-      const sides = [1,3,5,7].filter(i=>!board[i]);
+      const sides=[1,3,5,7].filter(i=>!board[i]);
       if(sides.length) return sides[Math.floor(Math.random()*sides.length)];
       return null;
     }
     function findBest(player){
       for(const [a,b,c] of WINS){
-        const line = [board[a], board[b], board[c]];
-        const countP = line.filter(v=>v===player).length;
-        const empties = [a,b,c].filter(i=>!board[i]);
+        const line=[board[a],board[b],board[c]];
+        const countP=line.filter(v=>v===player).length;
+        const empties=[a,b,c].filter(i=>!board[i]);
         if(countP===2 && empties.length===1) return empties[0];
       }
       return null;
     }
 
-    // Event hooks
     newGameBtn.addEventListener('click', newRound);
     resetBtn.addEventListener('click', resetAll);
     undoBtn.addEventListener('click', undo);
-    modeSelect.addEventListener('change', ()=>{ newRound(); });
+    modeSelect.addEventListener('change', newRound);
 
-    // Boot
     updateScoreUI();
     initBoard();
   </script>
