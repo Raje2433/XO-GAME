@@ -73,11 +73,17 @@
     .badge.good { border-color: rgba(34,197,94,.5); box-shadow: 0 0 0 2px rgba(34,197,94,.15) inset; }
 
     .board {
-      display: grid; grid-template-columns: repeat(3, minmax(80px, 1fr));
-      gap: 12px; width: 100%;
-    }
-    .cell {
-      aspect-ratio: 1 / 1; width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 420px;   /* ✅ keeps the board from stretching */
+  margin: 0 auto;     /* ✅ centers it */
+}
+.cell {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  max-width: 120px;   /* ✅ keeps cells equal and square */
       display: grid; place-items: center;
       font-size: clamp(2.4rem, 10vw, 4.6rem);
       font-weight: 900; letter-spacing: 1px;
