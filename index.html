@@ -72,32 +72,33 @@
     .badge.accent { border-color: rgba(124,92,255,.5); box-shadow: 0 0 0 2px rgba(124,92,255,.15) inset; }
     .badge.good { border-color: rgba(34,197,94,.5); box-shadow: 0 0 0 2px rgba(34,197,94,.15) inset; }
 
-    .board {
+ .board {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 8px;              /* 🔽 smaller gap */
   width: 100%;
-  max-width: 420px;   /* Board size stays compact */
-  margin: 20px auto;  /* Center it */
+  max-width: 300px;      /* 🔽 reduced board size */
+  margin: 20px auto;
 }
 
 .cell {
-  aspect-ratio: 1 / 1; /* Always square */
-  width: 100%;         /* Auto-size based on board */
-  
+  aspect-ratio: 1 / 1;
+  width: 100%;
+
   display: grid;
   place-items: center;
-  font-size: clamp(2.4rem, 10vw, 4.6rem);
-  font-weight: 900;
+  font-size: clamp(1.8rem, 6vw, 3rem); /* 🔽 smaller font */
+  font-weight: 800;
   letter-spacing: 1px;
-  
-  background: radial-gradient(500px 500px at 50% 30%, #1f254a 0%, #171a2f 60%);
+
+  background: radial-gradient(300px 300px at 50% 30%, #1f254a 0%, #171a2f 60%);
   color: var(--text);
   border: 1px solid rgba(255,255,255,.08);
-  border-radius: 16px;
+  border-radius: 12px;   /* 🔽 smaller rounding */
   cursor: pointer;
   transition: background .2s ease, transform .06s ease, box-shadow .2s ease;
 }
+
 
     .cell:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
     .cell:hover { background: #232a54; }
